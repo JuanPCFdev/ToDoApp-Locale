@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aplicación de Tareas</string>
+    <string name="done">Hecho</string>
+    <string name="in_progress">En Progreso</string>
+    <string name="pending">Pendiente</string>
+    <string name="due">Vencimiento</string>
+    <string name="due_date">Fecha Límite</string>
+    <string name="select_date">Seleccionar Fecha</string>
+    <string name="title_new_task">Nueva Tarea</string>
+    <string name="title">Título</string>
+    <string name="description">Descripción</string>
+    <string name="add">Agregar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete_task_icon">Icono de Eliminar Tarea</string>
+    <string name="no_tasks_created_yet">No hay tareas creadas aún</string>
+</resources>
