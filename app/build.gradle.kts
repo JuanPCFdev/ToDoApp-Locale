@@ -64,6 +64,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     //Swipe
     implementation(libs.swipe)
+    //Work
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

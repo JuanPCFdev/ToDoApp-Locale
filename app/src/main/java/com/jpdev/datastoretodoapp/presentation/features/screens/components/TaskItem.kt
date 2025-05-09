@@ -28,7 +28,9 @@ import com.jpdev.datastoretodoapp.presentation.features.screens.utils.customForm
 import com.jpdev.datastoretodoapp.presentation.theme.Gray
 import com.jpdev.datastoretodoapp.presentation.theme.Green
 import com.jpdev.datastoretodoapp.presentation.theme.Purple
+import com.jpdev.datastoretodoapp.presentation.theme.Red
 import com.jpdev.datastoretodoapp.presentation.theme.White
+import com.jpdev.datastoretodoapp.presentation.features.screens.utils.isOverdue
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,7 +80,7 @@ fun TaskItem(
                     text = stringResource(R.string.due) + " ${customFormatDate(task.dueDate)}",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 12.sp,
-                    color = White
+                    color = if(isOverdue(task.dueDate)) Red else White
                 )
                 DropDownCustom(
                     currentStatus = task.status,

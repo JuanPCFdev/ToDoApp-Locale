@@ -4,6 +4,7 @@ import com.jpdev.datastoretodoapp.domain.repository.TaskRepository
 import com.jpdev.datastoretodoapp.domain.usecases.AddTaskUseCase
 import com.jpdev.datastoretodoapp.domain.usecases.DeleteTaskUseCase
 import com.jpdev.datastoretodoapp.domain.usecases.GetTasksUseCase
+import com.jpdev.datastoretodoapp.domain.usecases.ScheduleTaskExpiryUseCase
 import com.jpdev.datastoretodoapp.domain.usecases.UpdateTaskStatusUseCase
 import com.jpdev.datastoretodoapp.domain.usecases.UpdateTaskUseCase
 import dagger.Module
@@ -34,5 +35,7 @@ object DomainModule {
     @Provides
     fun provideUpdateTaskStatusUseCase(repository: TaskRepository): UpdateTaskStatusUseCase =
         UpdateTaskStatusUseCase(repository)
+
+
 
 }

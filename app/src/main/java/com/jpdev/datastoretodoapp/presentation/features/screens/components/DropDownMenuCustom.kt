@@ -18,8 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,9 +34,7 @@ fun DropDownCustom(
     onStatusSelected: (Status) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-
     var maxWidth by remember { mutableIntStateOf(0) }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -59,7 +55,6 @@ fun DropDownCustom(
                 color = White
             )
         }
-
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
@@ -69,17 +64,6 @@ fun DropDownCustom(
             Column {
 
                 Status.entries.forEach { status ->
-                    //FAKE TEXT FOR THE SIZE
-                    Text(
-                        text = status.name,
-                        modifier = Modifier
-                            .onGloballyPositioned { coordinates ->
-                                val width = coordinates.size.width
-                                if (width > maxWidth) maxWidth = width
-                            }
-                            .alpha(0f)
-                    )
-                    //REAL TEXT
                     DropdownMenuItem(
                         text = {
                             Text(

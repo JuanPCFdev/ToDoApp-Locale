@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 fun customFormatDate(timestamp: Long): String {
     val formatter = DateTimeFormatter
-        .ofPattern("dd MMM yyyy HH:mm")
+        .ofPattern("dd MMM yyyy")
         .withZone(ZoneId.systemDefault())
     return formatter.format(Instant.ofEpochMilli(timestamp))
 }

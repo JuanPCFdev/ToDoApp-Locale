@@ -51,4 +51,5 @@ object DataModule {
         dataSource: TaskLocalDataSource,
         mapper: TaskMapper
     ): TaskRepository = TaskRepositoryImpl(dataSource, mapper)
+
 }

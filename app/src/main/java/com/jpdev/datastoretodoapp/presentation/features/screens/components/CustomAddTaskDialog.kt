@@ -1,5 +1,7 @@
 package com.jpdev.datastoretodoapp.presentation.features.screens.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,11 +26,10 @@ import com.jpdev.datastoretodoapp.presentation.theme.BackgroundApp
 import com.jpdev.datastoretodoapp.presentation.theme.Blue
 import com.jpdev.datastoretodoapp.presentation.theme.CancelButton
 import com.jpdev.datastoretodoapp.presentation.theme.White
+import com.jpdev.datastoretodoapp.presentation.features.screens.utils.formatDateForDisplay
 import showDatePickerWrapper
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomAddTaskDialog(
@@ -39,10 +40,15 @@ fun CustomAddTaskDialog(
     dueDate: Long,
     onDueDateChange: (Long) -> Unit,
     onConfirm: (String, String, Long) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
-
+    val outlinedColors = OutlinedTextFieldDefaults.colors(
+        unfocusedBorderColor = Blue,
+        focusedBorderColor = Blue,
+        focusedTextColor = Blue,
+        unfocusedTextColor = Blue
+    )
     AlertDialog(
         containerColor = BackgroundApp,
         onDismissRequest = onDismiss,
@@ -53,26 +59,15 @@ fun CustomAddTaskDialog(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 OutlinedTextField(
-                    colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = Blue,
-                        focusedBorderColor = Blue,
-                        focusedTextColor = Blue,
-                        unfocusedTextColor = Blue
-                    ),
+                    colors = outlinedColors,
                     value = title,
                     onValueChange = onTitleChange,
                     label = { Text(stringResource(R.string.title), color = White) },
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 OutlinedTextField(
-                    colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = Blue,
-                        focusedBorderColor = Blue,
-                        focusedTextColor = Blue,
-                        unfocusedTextColor = Blue
-                    ),
+                    colors = outlinedColors,
                     value = description,
                     onValueChange = onDescriptionChange,
                     label = { Text(stringResource(R.string.description), color = White) },
@@ -80,10 +75,7 @@ fun CustomAddTaskDialog(
                 )
 
                 OutlinedTextField(
-                    value = SimpleDateFormat(
-                        "dd/MM/yyyy",
-                        Locale.getDefault()
-                    ).format(Date(dueDate)),
+                    value = formatDateForDisplay(dueDate),
                     onValueChange = {},
                     label = { Text(stringResource(R.string.due_date), color = Blue) },
                     modifier = Modifier
@@ -106,11 +98,7 @@ fun CustomAddTaskDialog(
                             tint = White
                         )
                     },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        disabledTextColor = Blue,
-                        disabledLabelColor = Blue,
-                        disabledBorderColor = Blue
-                    )
+                    colors = outlinedColors
                 )
 
             }
