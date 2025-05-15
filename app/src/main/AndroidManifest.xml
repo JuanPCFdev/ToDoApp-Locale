@@ -29,18 +29,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver
-            android:name=".presentation.receivers.BootReceiver"
-            android:enabled="true"
-            android:exported="false">
+
+        <receiver android:name=".widget.WidgetReceiver"
+            android:exported="true"
+            android:label="Tasks Widget">
+
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_task_info"/>
+
         </receiver>
 
-        <receiver
-            android:name=".presentation.receivers.TaskNotificationReceiver"
-            android:exported="false" />
     </application>
 
 </manifest>

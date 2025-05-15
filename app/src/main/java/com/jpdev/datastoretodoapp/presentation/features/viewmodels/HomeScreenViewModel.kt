@@ -1,14 +1,15 @@
 package com.jpdev.datastoretodoapp.presentation.features.viewmodels
 
+import android.content.Context
+import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jpdev.datastoretodoapp.domain.model.Status
 import com.jpdev.datastoretodoapp.domain.model.Task
-import com.jpdev.datastoretodoapp.domain.repository.TaskRepository
-import com.jpdev.datastoretodoapp.domain.usecases.CancelTaskExpiryUseCase
 import com.jpdev.datastoretodoapp.domain.usecases.DeleteTaskUseCase
 import com.jpdev.datastoretodoapp.domain.usecases.GetTasksUseCase
 import com.jpdev.datastoretodoapp.domain.usecases.UpdateTaskStatusUseCase
+import com.jpdev.datastoretodoapp.widget.TaskWidget
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,8 +21,7 @@ import javax.inject.Inject
 class HomeScreenViewModel @Inject constructor(
     private val getTasksUseCase: GetTasksUseCase,
     private val updateTaskStatusUseCase: UpdateTaskStatusUseCase,
-    private val deleteTaskUseCase: DeleteTaskUseCase,
-    private val cancelNotificationUseCase: CancelTaskExpiryUseCase
+    private val deleteTaskUseCase: DeleteTaskUseCase
 ) : ViewModel() {
 
     private val _tasksList = MutableStateFlow<List<Task>?>(null)
@@ -65,7 +65,6 @@ class HomeScreenViewModel @Inject constructor(
     fun deleteTask(taskId: String) {
         viewModelScope.launch {
             deleteTaskUseCase(taskId)
-            cancelNotificationUseCase(taskId)
             updateList()
         }
     }
@@ -97,6 +96,8 @@ class HomeScreenViewModel @Inject constructor(
         }
 
     }
+
+
 
     sealed class UiState {
         data object Loading : UiState()

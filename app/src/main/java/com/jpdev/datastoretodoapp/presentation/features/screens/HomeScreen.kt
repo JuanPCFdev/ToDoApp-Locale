@@ -1,5 +1,6 @@
 package com.jpdev.datastoretodoapp.presentation.features.screens
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -15,37 +16,45 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.glance.appwidget.updateAll
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.jpdev.datastoretodoapp.R.string
 import com.jpdev.datastoretodoapp.presentation.features.screens.components.AddTaskDialog
+import com.jpdev.datastoretodoapp.presentation.features.screens.components.CurrentTasksCard
+import com.jpdev.datastoretodoapp.presentation.features.screens.components.CustomAppBar
 import com.jpdev.datastoretodoapp.presentation.features.screens.components.FabCustom
 import com.jpdev.datastoretodoapp.presentation.features.screens.components.TaskList
 import com.jpdev.datastoretodoapp.presentation.features.viewmodels.HomeScreenViewModel
 import com.jpdev.datastoretodoapp.presentation.theme.BackgroundApp
-import com.jpdev.datastoretodoapp.presentation.theme.Red
-import com.jpdev.datastoretodoapp.presentation.theme.White
-import com.jpdev.datastoretodoapp.R.string
-import com.jpdev.datastoretodoapp.presentation.features.screens.components.CurrentTasksCard
-import com.jpdev.datastoretodoapp.presentation.features.screens.components.CustomAppBar
 import com.jpdev.datastoretodoapp.presentation.theme.Green
 import com.jpdev.datastoretodoapp.presentation.theme.Purple
+import com.jpdev.datastoretodoapp.presentation.theme.Red
+import com.jpdev.datastoretodoapp.presentation.theme.White
+import com.jpdev.datastoretodoapp.widget.TaskWidget
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
-
     val uiState by viewModel.uiState.collectAsState()
-    val taskList = viewModel.tasksList.collectAsState()
-    val showDialog = viewModel.showAddDialog.collectAsState()
-    val pending = viewModel.pending.collectAsState()
-    val inProgress = viewModel.inProgress.collectAsState()
-    val done = viewModel.done.collectAsState()
+    val taskList by viewModel.tasksList.collectAsState()
+    val showDialog by viewModel.showAddDialog.collectAsState()
+    val pending by viewModel.pending.collectAsState()
+    val inProgress by viewModel.inProgress.collectAsState()
+    val done by viewModel.done.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(true) {
+        TaskWidget().updateAll(context)
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -84,17 +93,23 @@ fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     StatsCards(
-                        pending = pending.value,
-                        inProgress = inProgress.value,
-                        done = done.value
+                        pending = pending,
+                        inProgress = inProgress,
+                        done = done
                     )
                     TaskList(
-                        tasks = taskList.value,
-                        onDelete = viewModel::deleteTask,
-                        onStatusChange = viewModel::updateTaskStatus
+                        tasks = taskList,
+                        onDelete = { taskId ->
+                            viewModel.deleteTask(taskId)
+                        },
+                        onStatusChange = { task, status ->
+                            viewModel.updateTaskStatus(task, status)
+                        }
                     )
-                    if (showDialog.value) {
-                        AddTaskDialog(onDismiss = { viewModel.onShowDialogChange() })
+                    if (showDialog) {
+                        AddTaskDialog(onDismiss = {
+                            viewModel.onShowDialogChange()
+                        })
                     }
                 }
             }
@@ -104,6 +119,7 @@ fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
 
 @Composable
 fun StatsCards(pending: Int, inProgress: Int, done: Int) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -130,4 +146,3 @@ fun StatsCards(pending: Int, inProgress: Int, done: Int) {
         )
     }
 }
-
